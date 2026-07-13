@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="The Internet (Heroku) – UI Regression Test Suite">
+    <listeners>
+        <listener class-name="com.util.CustomListener"/>
+        <listener class-name="com.util.MyTransformer"/>
+    </listeners>
+    <test name="The Internet (Heroku) – UI Test Cases">
+        <classes>
+            <class name="com.herokuapp.ui.testcases.LoginPageTest"/>
+            <class name="com.herokuapp.ui.testcases.DropdownPageTest"/>
+            <class name="com.herokuapp.ui.testcases.CheckboxesPageTest"/>
+            <class name="com.herokuapp.ui.testcases.DynamicLoadingPageTest"/>
+            <class name="com.herokuapp.ui.testcases.JavaScriptAlertsPageTest"/>
+        </classes>
+    </test>
+</suite>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="JSONPlaceholder API Test Suite">
+    <test name="JSONPlaceholder API Tests">
+        <classes>
+            <class name="com.jsonplaceholder.api.testcases.PostsGetAndPostTest"/>
+            <class name="com.jsonplaceholder.api.testcases.PostsPutPatchDeleteTest"/>
+            <class name="com.jsonplaceholder.api.testcases.NestedAndFilterTest"/>
+        </classes>
+    </test>
+</suite>

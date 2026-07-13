@@ -5,6 +5,13 @@
 	<groupId>POMSeleniumAutomation</groupId>
 	<artifactId>POMSeleniumTest</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+
+	<!-- Default property values – overridable via -Dapp=<value> -Denv=<value> -Dbrowser=<value> -->
+	<properties>
+		<app>pta</app>
+		<env>qa</env>
+		<browser>chrome</browser>
+	</properties>
 	<dependencies>
 		<!--
 		https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
@@ -100,7 +107,6 @@
 			<groupId>io.rest-assured</groupId>
 			<artifactId>rest-assured</artifactId>
 			<version>5.5.0</version>
-			<scope>test</scope>
 		</dependency>
 
 		<!--
@@ -112,12 +118,143 @@
 		</dependency>
 
 	</dependencies>
+	<!-- ============================================================ -->
+	<!-- Environment + Application Profiles                           -->
+	<!--                                                              -->
+	<!-- UI Tests:                                                    -->
+	<!--   mvn clean test -Ppta-qa       (PTA - default)              -->
+	<!--   mvn clean test -Pheroku-qa    (Heroku)                     -->
+	<!--                                                              -->
+	<!-- API Tests:                                                   -->
+	<!--   mvn clean test -Pjsonplaceholder-qa  (JSONPlaceholder)     -->
+	<!--                                                              -->
+	<!-- Suffix any profile with -dev | -stage | -prod for envs.      -->
+	<!-- Override browser (UI only): -Dbrowser=firefox | edge         -->
+	<!-- ============================================================ -->
+	<profiles>
+
+		<!-- ── PTA UI profiles ───────────────────────────────────── -->
+		<profile>
+			<id>pta-dev</id>
+			<properties>
+				<app>pta</app>
+				<env>dev</env>
+				<suiteFile>src/main/resources/testng_regression.xml</suiteFile>
+			</properties>
+		</profile>
+
+		<profile>
+			<id>pta-qa</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<app>pta</app>
+				<env>qa</env>
+				<suiteFile>src/main/resources/testng_regression.xml</suiteFile>
+			</properties>
+		</profile>
+
+		<profile>
+			<id>pta-stage</id>
+			<properties>
+				<app>pta</app>
+				<env>stage</env>
+				<suiteFile>src/main/resources/testng_regression.xml</suiteFile>
+			</properties>
+		</profile>
+
+		<profile>
+			<id>pta-prod</id>
+			<properties>
+				<app>pta</app>
+				<env>prod</env>
+				<suiteFile>src/main/resources/testng_regression.xml</suiteFile>
+			</properties>
+		</profile>
+
+		<!-- ── Heroku UI profiles ────────────────────────────────── -->
+		<profile>
+			<id>heroku-dev</id>
+			<properties>
+				<app>herokuapp</app>
+				<env>dev</env>
+				<suiteFile>src/main/resources/testng_herokuapp.xml</suiteFile>
+			</properties>
+		</profile>
+
+		<profile>
+			<id>heroku-qa</id>
+			<properties>
+				<app>herokuapp</app>
+				<env>qa</env>
+				<suiteFile>src/main/resources/testng_herokuapp.xml</suiteFile>
+			</properties>
+		</profile>
+
+		<profile>
+			<id>heroku-stage</id>
+			<properties>
+				<app>herokuapp</app>
+				<env>stage</env>
+				<suiteFile>src/main/resources/testng_herokuapp.xml</suiteFile>
+			</properties>
+		</profile>
+
+		<profile>
+			<id>heroku-prod</id>
+			<properties>
+				<app>herokuapp</app>
+				<env>prod</env>
+				<suiteFile>src/main/resources/testng_herokuapp.xml</suiteFile>
+			</properties>
+		</profile>
+
+		<!-- ── JSONPlaceholder API profiles ─────────────────────── -->
+		<profile>
+			<id>jsonplaceholder-dev</id>
+			<properties>
+				<app>jsonplaceholder</app>
+				<env>dev</env>
+				<suiteFile>src/main/resources/testng_jsonplaceholder.xml</suiteFile>
+			</properties>
+		</profile>
+
+		<profile>
+			<id>jsonplaceholder-qa</id>
+			<properties>
+				<app>jsonplaceholder</app>
+				<env>qa</env>
+				<suiteFile>src/main/resources/testng_jsonplaceholder.xml</suiteFile>
+			</properties>
+		</profile>
+
+		<profile>
+			<id>jsonplaceholder-stage</id>
+			<properties>
+				<app>jsonplaceholder</app>
+				<env>stage</env>
+				<suiteFile>src/main/resources/testng_jsonplaceholder.xml</suiteFile>
+			</properties>
+		</profile>
+
+		<profile>
+			<id>jsonplaceholder-prod</id>
+			<properties>
+				<app>jsonplaceholder</app>
+				<env>prod</env>
+				<suiteFile>src/main/resources/testng_jsonplaceholder.xml</suiteFile>
+			</properties>
+		</profile>
+
+	</profiles>
+
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.8.1</version> <!-- Use an appropriate version -->
+				<version>3.8.1</version>
 				<configuration>
 					<source>8</source>
 					<target>8</target>
@@ -129,8 +266,14 @@
 				<version>3.5.2</version>
 				<configuration>
 					<suiteXmlFiles>
-						<suiteXmlFile>src/main/resources/testng_regression.xml</suiteXmlFile>
+						<suiteXmlFile>${suiteFile}</suiteXmlFile>
 					</suiteXmlFiles>
+					<!-- Pass app, env, and browser to tests as JVM system properties -->
+					<systemPropertyVariables>
+						<app>${app}</app>
+						<env>${env}</env>
+						<browser>${browser}</browser>
+					</systemPropertyVariables>
 				</configuration>
 			</plugin>
 		</plugins>
