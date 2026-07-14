@@ -37,6 +37,7 @@ public class DropdownPageTest extends TestBase {
 
     @BeforeMethod
     public void setup() throws MalformedURLException {
+        log.info("--- [SETUP] Launching browser | Initializing DropdownPage ---");
         initialization();
         dropdownPage = new DropdownPage();
         dropdownPage.navigate();
@@ -126,7 +127,7 @@ public class DropdownPageTest extends TestBase {
     @AfterMethod
     public void teardown() {
         driver.quit();
-        log.info("Browser closed.");
+        log.info("--- [TEARDOWN] Browser closed ---");
     }
 
     @AfterSuite

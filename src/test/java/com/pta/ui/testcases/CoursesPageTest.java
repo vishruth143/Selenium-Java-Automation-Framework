@@ -38,6 +38,7 @@ public class CoursesPageTest extends TestBase {
 	
 	@BeforeMethod
 	public void setup() throws MalformedURLException {
+		log.info("--- [SETUP] Launching browser | Logging in | Navigating to CoursesPage ---");
 		initialization();		
 		loginpage = new LoginPage();
 		homepage = loginpage.login(prop.getProperty("username"), prop.getProperty("password"));	
@@ -134,8 +135,9 @@ public class CoursesPageTest extends TestBase {
 	@AfterMethod
 	public void teardown() {
 		driver.quit();
+		log.info("--- [TEARDOWN] Browser closed ---");
 	}
-	
+
 	@AfterSuite
 	public void reportClosure() {
 		if (TestUtil.extent != null) {

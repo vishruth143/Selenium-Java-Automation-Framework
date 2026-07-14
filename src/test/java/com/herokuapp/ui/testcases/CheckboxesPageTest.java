@@ -39,6 +39,7 @@ public class CheckboxesPageTest extends TestBase {
 
     @BeforeMethod
     public void setup() throws MalformedURLException {
+        log.info("--- [SETUP] Launching browser | Initializing CheckboxesPage ---");
         initialization();
         checkboxesPage = new CheckboxesPage();
         checkboxesPage.navigate();
@@ -128,7 +129,7 @@ public class CheckboxesPageTest extends TestBase {
     @AfterMethod
     public void teardown() {
         driver.quit();
-        log.info("Browser closed.");
+        log.info("--- [TEARDOWN] Browser closed ---");
     }
 
     @AfterSuite

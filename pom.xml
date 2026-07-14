@@ -6,19 +6,18 @@
 	<artifactId>POMSeleniumTest</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 
-	<!-- Default property values – overridable via -Dapp=<value> -Denv=<value> -Dbrowser=<value> -->
+	<!-- Default property values; override on the command line e.g. -Dbrowser=firefox -->
 	<properties>
-		<app>pta</app>
-		<env>qa</env>
 		<browser>chrome</browser>
 	</properties>
+
 	<dependencies>
 		<!--
 		https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-java</artifactId>
-			<version>4.27.0</version>
+			<version>4.45.0</version>
 		</dependency>
 
 		<!--
@@ -26,14 +25,14 @@
 		<dependency>
 			<groupId>io.github.bonigarcia</groupId>
 			<artifactId>webdrivermanager</artifactId>
-			<version>5.9.2</version>
+			<version>6.3.4</version>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.testng/testng -->
 		<dependency>
 			<groupId>org.testng</groupId>
 			<artifactId>testng</artifactId>
-			<version>7.10.2</version>
+			<version>7.12.0</version>
 			<scope>compile</scope>
 		</dependency>
 
@@ -41,21 +40,21 @@
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi</artifactId>
-			<version>5.3.0</version>
+			<version>5.5.1</version>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi-ooxml</artifactId>
-			<version>5.3.0</version>
+			<version>5.5.1</version>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.apache.poi/poi-scratchpad -->
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi-scratchpad</artifactId>
-			<version>5.3.0</version>
+			<version>5.5.1</version>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml-schemas -->
@@ -91,7 +90,7 @@
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-core</artifactId>
-			<version>2.24.3</version>
+			<version>2.26.1</version>
 		</dependency>
 
 		<!--
@@ -99,14 +98,14 @@
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-api</artifactId>
-			<version>2.24.3</version>
+			<version>2.26.1</version>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/io.rest-assured/rest-assured -->
 		<dependency>
 			<groupId>io.rest-assured</groupId>
 			<artifactId>rest-assured</artifactId>
-			<version>5.5.0</version>
+			<version>6.0.0</version>
 		</dependency>
 
 		<!--
@@ -139,7 +138,7 @@
 			<properties>
 				<app>pta</app>
 				<env>dev</env>
-				<suiteFile>src/main/resources/testng_regression.xml</suiteFile>
+				<suiteFile>src/main/resources/testng_pta_regression.xml</suiteFile>
 			</properties>
 		</profile>
 
@@ -151,7 +150,7 @@
 			<properties>
 				<app>pta</app>
 				<env>qa</env>
-				<suiteFile>src/main/resources/testng_regression.xml</suiteFile>
+				<suiteFile>src/main/resources/testng_pta_regression.xml</suiteFile>
 			</properties>
 		</profile>
 
@@ -160,7 +159,7 @@
 			<properties>
 				<app>pta</app>
 				<env>stage</env>
-				<suiteFile>src/main/resources/testng_regression.xml</suiteFile>
+				<suiteFile>src/main/resources/testng_pta_regression.xml</suiteFile>
 			</properties>
 		</profile>
 
@@ -169,7 +168,7 @@
 			<properties>
 				<app>pta</app>
 				<env>prod</env>
-				<suiteFile>src/main/resources/testng_regression.xml</suiteFile>
+				<suiteFile>src/main/resources/testng_pta_regression.xml</suiteFile>
 			</properties>
 		</profile>
 
@@ -179,7 +178,7 @@
 			<properties>
 				<app>herokuapp</app>
 				<env>dev</env>
-				<suiteFile>src/main/resources/testng_herokuapp.xml</suiteFile>
+				<suiteFile>src/main/resources/testng_herokuapp_regression.xml</suiteFile>
 			</properties>
 		</profile>
 
@@ -188,7 +187,7 @@
 			<properties>
 				<app>herokuapp</app>
 				<env>qa</env>
-				<suiteFile>src/main/resources/testng_herokuapp.xml</suiteFile>
+				<suiteFile>src/main/resources/testng_herokuapp_regression.xml</suiteFile>
 			</properties>
 		</profile>
 
@@ -197,7 +196,7 @@
 			<properties>
 				<app>herokuapp</app>
 				<env>stage</env>
-				<suiteFile>src/main/resources/testng_herokuapp.xml</suiteFile>
+				<suiteFile>src/main/resources/testng_herokuapp_regression.xml</suiteFile>
 			</properties>
 		</profile>
 
@@ -206,7 +205,7 @@
 			<properties>
 				<app>herokuapp</app>
 				<env>prod</env>
-				<suiteFile>src/main/resources/testng_herokuapp.xml</suiteFile>
+				<suiteFile>src/main/resources/testng_herokuapp_regression.xml</suiteFile>
 			</properties>
 		</profile>
 

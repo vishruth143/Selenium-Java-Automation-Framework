@@ -38,6 +38,7 @@ public class HomePageTest extends TestBase {
 	
 	@BeforeMethod
 	public void setup() throws MalformedURLException {
+		log.info("--- [SETUP] Launching browser | Logging in | Initializing HomePage ---");
 		initialization();		
 		loginpage = new LoginPage();
 		contactpage = new ContactPage();
@@ -208,6 +209,7 @@ public class HomePageTest extends TestBase {
 	@AfterMethod
 	public void teardown() {
 		driver.quit();
+		log.info("--- [TEARDOWN] Browser closed ---");
 	}
 	
 	@AfterSuite

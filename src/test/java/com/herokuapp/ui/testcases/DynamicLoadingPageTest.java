@@ -39,6 +39,7 @@ public class DynamicLoadingPageTest extends TestBase {
 
     @BeforeMethod
     public void setup() throws MalformedURLException {
+        log.info("--- [SETUP] Launching browser | Initializing DynamicLoadingPage ---");
         initialization();
         dynamicLoadingPage = new DynamicLoadingPage();
         dynamicLoadingPage.navigate();
@@ -127,7 +128,7 @@ public class DynamicLoadingPageTest extends TestBase {
     @AfterMethod
     public void teardown() {
         driver.quit();
-        log.info("Browser closed.");
+        log.info("--- [TEARDOWN] Browser closed ---");
     }
 
     @AfterSuite

@@ -37,6 +37,7 @@ public class JavaScriptAlertsPageTest extends TestBase {
 
     @BeforeMethod
     public void setup() throws MalformedURLException {
+        log.info("--- [SETUP] Launching browser | Initializing JavaScriptAlertsPage ---");
         initialization();
         jsAlertsPage = new JavaScriptAlertsPage();
         jsAlertsPage.navigate();
@@ -171,7 +172,7 @@ public class JavaScriptAlertsPageTest extends TestBase {
     @AfterMethod
     public void teardown() {
         driver.quit();
-        log.info("Browser closed.");
+        log.info("--- [TEARDOWN] Browser closed ---");
     }
 
     @AfterSuite

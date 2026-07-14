@@ -1,6 +1,6 @@
 # Selenium Java Automation Framework
 
-**Java** 21 | **Selenium** 4.27.0 | **TestNG** 7.10.2 | **Maven** 3.9.9 | **REST Assured** 5.5.0 | **License** MIT
+**Java** "21.0.11" 2026-04-21 LTS | **Selenium** 4.27.0 | **TestNG** 7.10.2 | **Maven** 3.9.16 | **REST Assured** 5.5.0 | **License** MIT
 
 A robust, scalable, and maintainable test automation framework built using **Selenium WebDriver**, **TestNG**, and **Java**.
 Implements the **Page Object Model (POM) / Page Chaining** design pattern with a data-driven approach.
@@ -45,14 +45,17 @@ The framework is organized into the following logical layers:
 
 **Location:** `src/main/java/com/base`
 
-Contains two shared parent classes:
+Contains three shared, application-agnostic classes:
 
 - `TestBase` — parent for all **UI** page and test classes. Initializes WebDriver, manages browser
-  configuration, timeouts, cookies, and ExtentReports. Resolves `-Dapp` and `-Denv` to load the
-  correct UI config file.
+  configuration, timeouts, cookies, and ExtentReports. Resolves `-Dapp` and `-Denv` at startup
+  to load the correct UI config file.
 
-- `ApiTestBase` — parent for all **API** test classes. Reads the same `-Dapp` and `-Denv` system
-  properties, loads the matching API config file, and automatically sets `RestAssured.baseURI`.
+- `ApiTestBase` — parent for all **API** test classes. Reads `-Dapp` and `-Denv`, loads the
+  matching API config file, and automatically sets `RestAssured.baseURI`.
+
+- `Environment` — enum (`DEV`, `QA`, `STAGE`, `PROD`) used by both base classes to resolve the
+  active environment from the `-Denv` system property. Defaults to `QA` when unset.
 
 ---
 
@@ -73,12 +76,12 @@ com/<app>/testdata/   - Excel test data (if applicable)
 **Practice Test Automation (PTA)** — UI
 - Package  : `com.pta`
 - Base URL : `https://practicetestautomation.com`
-- Suite    : `testng_regression.xml`
+- Suite    : `testng_pta_regression.xml`
 
 **The Internet (Heroku)** — UI
 - Package  : `com.herokuapp`
 - Base URL : `https://the-internet.herokuapp.com`
-- Suite    : `testng_herokuapp.xml`
+- Suite    : `testng_herokuapp_regression.xml`
 
 **JSONPlaceholder** — API
 - Package  : `com.jsonplaceholder`
@@ -93,21 +96,25 @@ com/<app>/testdata/   - Excel test data (if applicable)
 
 TestNG test classes for each application's UI scenarios. All classes extend `com.base.TestBase`.
 
+**PTA test coverage (6 classes):**
+- `LoginPageTest`, `HomePageTest`, `PracticePageTest`, `CoursesPageTest`, `BlogPageTest`, `ContactPageTest`
+
+**Heroku test coverage (5 classes):**
+- `LoginPageTest`, `DropdownPageTest`, `CheckboxesPageTest`, `DynamicLoadingPageTest`, `JavaScriptAlertsPageTest`
+
 ---
 
 ### 3b. Test Layer — API
 
 **Location:** `src/test/java/com/<app>/api/testcases`
 
-TestNG test classes for each API service's scenarios. All classes extend `com.base.ApiTestBase`,
-which automatically sets `RestAssured.baseURI` from the resolved config file.
+TestNG test classes for each API service. All classes extend `com.base.ApiTestBase`, which
+automatically sets `RestAssured.baseURI` from the resolved config file.
 
-**JSONPlaceholder test coverage:**
-
-- `PostsGetAndPostTest`  — GET all posts, GET post by ID, POST create a post
+**JSONPlaceholder test coverage (3 classes):**
+- `PostsGetAndPostTest`     — GET all posts, GET post by ID, POST create a post
 - `PostsPutPatchDeleteTest` — PUT full update, PATCH partial update, DELETE
-- `NestedAndFilterTest`  — Nested routes (`/posts/1/comments`), query param filters
-  (`?postId=`, `?userId=`), GET user by ID, filter todos by user
+- `NestedAndFilterTest`     — Nested routes, query param filters (`?postId=`, `?userId=`), GET user by ID, filter todos
 
 ---
 
@@ -115,8 +122,8 @@ which automatically sets `RestAssured.baseURI` from the resolved config file.
 
 **Location:** `src/main/java/com/util`
 
-Shared helpers: screenshot capture, Excel reader (`TestUtil`), event listeners
-(`CustomListener`, `MyTransformer`), and retry logic (`RetryAnalyzer`).
+Shared helpers: screenshot capture, Excel reader (`TestUtil`), WebDriver event logger
+(`WebDriverEventLogger`), event listeners (`CustomListener`, `MyTransformer`), and retry logic (`RetryAnalyzer`).
 
 ---
 
@@ -132,7 +139,7 @@ The report title automatically includes the active environment name.
 ## Tech Stack
 
 ### Core
-- **Java (JDK)** `21` — Core programming language
+- **Java (JDK)** `21"21.0.11" 2026-04-21 LTS` — Core programming language
 - **Maven** `3.9.9` — Build automation and dependency management
 
 ### UI Automation
@@ -163,7 +170,7 @@ The report title automatically includes the active environment name.
 
 Before setting up the project, ensure the following are installed and configured on your machine:
 
-- Java JDK 8 or higher
+- Java JDK 21
 - Apache Maven 3.6 or higher
 - Git
 - Eclipse IDE (with TestNG plugin) or IntelliJ IDEA
@@ -186,37 +193,37 @@ cd Selenium-Java-Automation-Framework
 
 2. Locate the JDK installation path:
 
-   ```bash
-   where javac
-   # Example output: C:\Program Files\Java\jdk-21\bin\javac.exe
-   ```
+```bash
+where javac
+# Example output: C:\Program Files\Java\jdk-21.0.11\bin\javac.exe
+```
 
 3. Set the `JAVA_HOME` environment variable:
 
    - Variable name  : `JAVA_HOME`
-   - Variable value : `C:\Program Files\Java\jdk-21`
+   - Variable value : `C:\Program Files\Java\jdk-21.0.11`
 
 4. Add `%JAVA_HOME%\bin` to the `Path` system variable.
 
 5. Verify the installation:
 
-   ```bash
-   java -version
-   javac -version
-   echo %JAVA_HOME%
-   ```
+```bash
+java -version
+javac -version
+echo %JAVA_HOME%
+```
 
 ### Install Maven
 
 1. Download the binary archive from [maven.apache.org](https://maven.apache.org/download.cgi)
-   (e.g., `apache-maven-3.9.9-bin.zip`).
+   (e.g., `apache-maven-3.9.16-bin.zip`).
 
-2. Extract to a directory such as `C:\Program Files\Apache\maven-3.9.9`.
+2. Extract to a directory such as `C:\Program Files\Apache\maven-3.9.16`.
 
 3. Set the following environment variables:
 
-   - `MAVEN_HOME`    = `C:\Program Files\Apache\maven-3.9.9`
-   - `Path` (append) = `C:\Program Files\Apache\maven-3.9.9\bin`
+   - `MAVEN_HOME`    = `C:\Program Files\Apache\maven-3.9.16`
+   - `Path` (append) = `C:\Program Files\Apache\maven-3.9.16\bin`
 
 4. Verify the installation:
 
@@ -262,41 +269,49 @@ Selenium-Java-Automation-Framework/
 |-- src/
 |   |-- main/
 |   |   |-- java/
-|   |   |   |-- com/base/                  (Shared TestBase + ApiTestBase - app-agnostic)
-|   |   |   |-- com/util/                  (Shared utilities and listeners - app-agnostic)
-|   |   |   |-- com/pta/                   (UI Application: Practice Test Automation)
-|   |   |   |   |-- config/                (config.dev/qa/stage/prod.properties)
-|   |   |   |   |-- pages/                 (Page Object classes)
-|   |   |   |   `-- testdata/              (TestData.xlsx)
-|   |   |   |-- com/herokuapp/             (UI Application: The Internet - Heroku)
-|   |   |   |   |-- config/                (config.dev/qa/stage/prod.properties)
-|   |   |   |   `-- pages/                 (Page Object classes)
-|   |   |   `-- com/jsonplaceholder/       (API Service: JSONPlaceholder)
-|   |   |       `-- config/                (config.dev/qa/stage/prod.properties)
+|   |   |   |-- com/base/                      (Shared - app-agnostic)
+|   |   |   |   |-- TestBase.java              (UI base: WebDriver + ExtentReports)
+|   |   |   |   |-- ApiTestBase.java           (API base: REST Assured)
+|   |   |   |   `-- Environment.java           (Enum: DEV, QA, STAGE, PROD)
+|   |   |   |-- com/util/                      (Shared utilities - app-agnostic)
+|   |   |   |   |-- TestUtil.java              (Screenshot capture + Apache POI Excel reader)
+|   |   |   |   |-- CustomListener.java        (ITestListener: screenshot on failure)
+|   |   |   |   |-- MyTransformer.java         (IAnnotationTransformer: apply retry to all tests)
+|   |   |   |   |-- RetryAnalyzer.java         (IRetryAnalyzer: test-level retry logic)
+|   |   |   |   `-- WebDriverEventLogger.java  (WebDriver event listener for action logging)
+|   |   |   |-- com/pta/                       (UI Application: Practice Test Automation)
+|   |   |   |   |-- config/                    (config.dev/qa/stage/prod.properties)
+|   |   |   |   |-- pages/                     (LoginPage, HomePage, PracticePage, ...)
+|   |   |   |   `-- testdata/                  (TestData.xlsx)
+|   |   |   |-- com/herokuapp/                 (UI Application: The Internet - Heroku)
+|   |   |   |   |-- config/                    (config.dev/qa/stage/prod.properties)
+|   |   |   |   `-- pages/                     (LoginPage, DropdownPage, CheckboxesPage, ...)
+|   |   |   `-- com/jsonplaceholder/            (API Service: JSONPlaceholder)
+|   |   |       `-- config/                    (config.dev/qa/stage/prod.properties)
 |   |   `-- resources/
-|   |       |-- log4j.properties
-|   |       |-- testng.xml                 (PTA - targeted suite)
-|   |       |-- testng_regression.xml      (PTA - regression suite)
-|   |       |-- testng_sanity.xml          (PTA - sanity suite)
-|   |       |-- testng_herokuapp.xml       (Heroku - UI regression suite)
-|   |       `-- testng_jsonplaceholder.xml (JSONPlaceholder - API suite)
+|   |       |-- log4j.properties               (Log4J logging configuration)
+|   |       |-- testng.xml                     (PTA - targeted suite)
+|   |       |-- testng_pta_regression.xml      (PTA - regression suite)
+|   |       |-- testng_sanity.xml              (PTA - sanity suite)
+|   |       |-- testng_herokuapp_regression.xml (Heroku - UI regression suite)
+|   |       `-- testng_jsonplaceholder.xml     (JSONPlaceholder - API suite)
 |   `-- test/
 |       `-- java/com/
 |           |-- pta/ui/testcases/              (PTA UI test classes)
 |           |-- herokuapp/ui/testcases/        (Heroku UI test classes)
 |           `-- jsonplaceholder/api/testcases/ (JSONPlaceholder API test classes)
-|-- docker-compose-standalone.yml
-|-- pom.xml
-`-- README.md
+|-- docker-compose-standalone.yml              (Selenium Grid: Chrome, Firefox, Edge containers)
+|-- pom.xml                                    (Maven build, dependencies, and profiles)
+`-- README.md                                  (Project documentation)
 ```
 
 ---
 
 ## Configuration
 
-Each application manages its own environment-specific config files.
+Each application manages its own environment-specific config files under `com/<app>/config/`.
 
-**UI applications** (`baseUri` + credentials + browser):
+**UI applications** (`url` + credentials + `browser`):
 
 ```
 src/main/java/com/pta/config/
@@ -328,7 +343,7 @@ browser  = chrome
 ```properties
 env     = qa
 baseUri = https://your-api-base-url.com
-apiKey  = your_api_key          (optional, omit if no auth required)
+apiKey  = your_api_key          (optional - omit if no auth required)
 ```
 
 ---
@@ -337,40 +352,53 @@ apiKey  = your_api_key          (optional, omit if no auth required)
 
 The active application and environment are selected via Maven profiles or system properties.
 
-`TestBase` resolves the config file path at runtime as:
+Both `TestBase` and `ApiTestBase` resolve the config file path at runtime as:
 
 ```
 src/main/java/com/<app>/config/config.<env>.properties
 ```
 
+The `Environment` enum (`com.base.Environment`) supports: `DEV`, `QA` (default), `STAGE`, `PROD`.
+
 ### Supported Maven Profiles
 
-**PTA (UI):**
+Each profile sets the target application (`-Dapp`), environment (`-Denv`), and the TestNG suite file.
 
-| Profile     | Environment | Suite XML               |
-| :---------- | :---------- | :---------------------- |
-| `pta-qa`    | QA (default)| `testng_regression.xml` |
-| `pta-dev`   | Dev         | `testng_regression.xml` |
-| `pta-stage` | Stage       | `testng_regression.xml` |
-| `pta-prod`  | Prod        | `testng_regression.xml` |
+**PTA — UI** (suite: `testng_pta_regression.xml`)
 
-**Heroku (UI):**
+<table>
+  <thead><tr><th>Profile</th><th>Environment</th></tr></thead>
+  <tbody>
+    <tr><td><code>pta-qa</code></td><td>QA (default)</td></tr>
+    <tr><td><code>pta-dev</code></td><td>Dev</td></tr>
+    <tr><td><code>pta-stage</code></td><td>Stage</td></tr>
+    <tr><td><code>pta-prod</code></td><td>Prod</td></tr>
+  </tbody>
+</table>
 
-| Profile       | Environment | Suite XML              |
-| :------------ | :---------- | :--------------------- |
-| `heroku-qa`   | QA          | `testng_herokuapp.xml` |
-| `heroku-dev`  | Dev         | `testng_herokuapp.xml` |
-| `heroku-stage`| Stage       | `testng_herokuapp.xml` |
-| `heroku-prod` | Prod        | `testng_herokuapp.xml` |
+**Heroku — UI** (suite: `testng_herokuapp_regression.xml`)
 
-**JSONPlaceholder (API):**
+<table>
+  <thead><tr><th>Profile</th><th>Environment</th></tr></thead>
+  <tbody>
+    <tr><td><code>heroku-qa</code></td><td>QA</td></tr>
+    <tr><td><code>heroku-dev</code></td><td>Dev</td></tr>
+    <tr><td><code>heroku-stage</code></td><td>Stage</td></tr>
+    <tr><td><code>heroku-prod</code></td><td>Prod</td></tr>
+  </tbody>
+</table>
 
-| Profile                 | Environment | Suite XML                    |
-| :---------------------- | :---------- | :--------------------------- |
-| `jsonplaceholder-qa`    | QA          | `testng_jsonplaceholder.xml` |
-| `jsonplaceholder-dev`   | Dev         | `testng_jsonplaceholder.xml` |
-| `jsonplaceholder-stage` | Stage       | `testng_jsonplaceholder.xml` |
-| `jsonplaceholder-prod`  | Prod        | `testng_jsonplaceholder.xml` |
+**JSONPlaceholder — API** (suite: `testng_jsonplaceholder.xml`)
+
+<table>
+  <thead><tr><th>Profile</th><th>Environment</th></tr></thead>
+  <tbody>
+    <tr><td><code>jsonplaceholder-qa</code></td><td>QA</td></tr>
+    <tr><td><code>jsonplaceholder-dev</code></td><td>Dev</td></tr>
+    <tr><td><code>jsonplaceholder-stage</code></td><td>Stage</td></tr>
+    <tr><td><code>jsonplaceholder-prod</code></td><td>Prod</td></tr>
+  </tbody>
+</table>
 
 ### Selecting an Application and Environment
 
@@ -420,26 +448,20 @@ mvn clean test -Dapp=jsonplaceholder -Denv=qa
 2. Select the **Arguments** tab.
 3. In the **VM arguments** field, add:
 
-   ```
-   -Dapp=herokuapp -Denv=qa -Dbrowser=chrome
-   ```
+```
+-Dapp=herokuapp -Denv=qa -Dbrowser=chrome
+```
 
 ---
 
 ## Adding a New Application
 
-The framework is **plug-and-play** — onboarding a new application or API service requires no
-changes to shared code.
+The framework is **plug-and-play** — onboarding a new UI app or API service requires no changes
+to any shared code.
 
 ### Adding a New UI Application
 
-**Step 1 — Create config files** under `src/main/java/com/<app>/config/`:
-
-```
-com/<app>/config/
-    config.dev/qa/stage/prod.properties
-```
-
+**Step 1 — Create config files** under `src/main/java/com/<app>/config/`.
 Each file contains: `env`, `url`, `username`, `password`, `browser`.
 
 **Step 2 — Create Page Object classes** under `src/main/java/com/<app>/pages/`.
@@ -448,7 +470,7 @@ Each page class extends `com.base.TestBase` and includes a `navigate()` method.
 **Step 3 — Create test classes** under `src/test/java/com/<app>/ui/testcases/`.
 Each test class extends `com.base.TestBase`.
 
-**Step 4 — Create a TestNG suite XML** under `src/main/resources/testng_<app>.xml`.
+**Step 4 — Create a TestNG suite XML** under `src/main/resources/testng_<app>_regression.xml`.
 
 **Step 5 — Add Maven profiles** in `pom.xml` for `<app>-dev/qa/stage/prod`.
 
@@ -458,17 +480,9 @@ Each test class extends `com.base.TestBase`.
 mvn clean test -P<app>-qa
 ```
 
----
-
 ### Adding a New API Service
 
-**Step 1 — Create config files** under `src/main/java/com/<app>/config/`:
-
-```
-com/<app>/config/
-    config.dev/qa/stage/prod.properties
-```
-
+**Step 1 — Create config files** under `src/main/java/com/<app>/config/`.
 Each file contains: `env`, `baseUri` and optionally `apiKey`.
 
 **Step 2 — Create test classes** under `src/test/java/com/<app>/api/testcases/`.
@@ -498,7 +512,7 @@ mvn clean test -P<app>-qa
 1. Ensure TestNG is on the build path:
    - Right-click the project and select **Build Path > Configure Build Path > Libraries**
    - Confirm TestNG is listed.
-2. Open `src/main/resources/testng_regression.xml`.
+2. Open the desired suite XML under `src/main/resources/`.
 3. Right-click the file and select **Run As > TestNG Suite**.
 
 ### Run Tests via Maven
@@ -517,7 +531,7 @@ mvn clean install
 - `package` — Packages compiled code into a `.jar`
 - `install` — Installs the artifact to the local Maven repository (`~/.m2`)
 
-> **Note:** The `maven-surefire-plugin` is configured to run the suite file defined by the active profile.
+> **Note:** The `maven-surefire-plugin` runs the suite file defined by the active Maven profile.
 > If no `<suiteXmlFiles>` is specified, Surefire auto-discovers all test classes matching
 > `*Test.java`, `*Tests.java`, or `*TestCase.java` under `src/test/java`.
 
@@ -531,31 +545,47 @@ mvn clean test
 
 The framework supports parallel execution via **Selenium Grid** using Docker.
 
-**Step 1 — Start the containers**
+---
+
+**1. Start the containers**
 
 ```bash
 docker compose -f docker-compose-standalone.yml up -d
 ```
 
-> On first run, Docker will pull the Selenium Standalone images for Chrome, Firefox, and Edge.
+On first run, Docker pulls the Selenium Standalone images for Chrome, Firefox, and Edge automatically.
 
-**Step 2 — WebDriver endpoints**
+---
 
-| Browser | Selenium URL           |
-| :------ | :--------------------- |
-| Chrome  | http://localhost:4441/ |
-| Firefox | http://localhost:4442/ |
-| Edge    | http://localhost:4443/ |
+**2. WebDriver endpoints**
 
-**Step 3 — Remote desktop access (noVNC)**
+<table>
+  <thead><tr><th>Browser</th><th>Selenium Grid URL</th></tr></thead>
+  <tbody>
+    <tr><td>Chrome</td><td>http://localhost:4441/</td></tr>
+    <tr><td>Firefox</td><td>http://localhost:4442/</td></tr>
+    <tr><td>Edge</td><td>http://localhost:4443/</td></tr>
+  </tbody>
+</table>
 
-| Browser | noVNC URL              | Password |
-| :------ | :--------------------- | :------- |
-| Chrome  | http://localhost:7901/ | `secret` |
-| Firefox | http://localhost:7902/ | `secret` |
-| Edge    | http://localhost:7903/ | `secret` |
+---
 
-**Step 4 — Stop the containers**
+**3. Remote desktop access via noVNC**
+
+Open in your browser and enter password `secret` when prompted.
+
+<table>
+  <thead><tr><th>Browser</th><th>noVNC URL</th></tr></thead>
+  <tbody>
+    <tr><td>Chrome</td><td>http://localhost:7901/</td></tr>
+    <tr><td>Firefox</td><td>http://localhost:7902/</td></tr>
+    <tr><td>Edge</td><td>http://localhost:7903/</td></tr>
+  </tbody>
+</table>
+
+---
+
+**4. Stop the containers**
 
 ```bash
 docker compose -f docker-compose-standalone.yml down
@@ -582,7 +612,7 @@ Failed tests can be automatically retried using two approaches:
 **Runtime retry (applies to all tests)**
 
 1. Implement the `transform()` method from the `IAnnotationTransformer` interface in `MyTransformer.java`.
-2. Register the listener in `testng.xml`:
+2. Register the listener in the TestNG suite XML:
 
    ```xml
    <listeners>
@@ -594,8 +624,9 @@ Failed tests can be automatically retried using two approaches:
 
 Automatic screenshots are captured on test failure:
 
-1. Override `onTestFailure()` (and optionally `onTestSuccess()`) from the `ITestListener` interface in `CustomListener.java`.
-2. Register the listener in `testng.xml`:
+1. Override `onTestFailure()` (and optionally `onTestSuccess()`) from the `ITestListener`
+   interface in `CustomListener.java`.
+2. Register the listener in the TestNG suite XML:
 
    ```xml
    <listeners>
@@ -618,11 +649,14 @@ public void skippedTest() { ... }
 
 The framework generates the following reports after each test run:
 
-| Report Type         | Location                                        |
-| :------------------ | :---------------------------------------------- |
-| TestNG HTML Report  | `target/surefire-reports/index.html`            |
-| TestNG XML Report   | `target/surefire-reports/testng-results.xml`    |
-| ExtentReport (HTML) | Configured output path in `CustomListener.java` |
+<table>
+  <thead><tr><th>Report Type</th><th>Location</th></tr></thead>
+  <tbody>
+    <tr><td>TestNG HTML Report</td><td><code>target/surefire-reports/index.html</code></td></tr>
+    <tr><td>TestNG XML Report</td><td><code>target/surefire-reports/testng-results.xml</code></td></tr>
+    <tr><td>ExtentReport (HTML)</td><td><code>reports/extentSparkReport.html</code></td></tr>
+  </tbody>
+</table>
 
 ---
 

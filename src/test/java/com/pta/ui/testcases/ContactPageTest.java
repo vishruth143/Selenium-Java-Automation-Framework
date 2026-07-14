@@ -41,6 +41,7 @@ public class ContactPageTest extends TestBase {
 
 	@BeforeMethod
 	public void setup() throws MalformedURLException {
+		log.info("--- [SETUP] Launching browser | Logging in | Navigating to ContactPage ---");
 		initialization();		
 		contactpage = new ContactPage();
 		loginpage = new LoginPage();
@@ -238,6 +239,7 @@ public class ContactPageTest extends TestBase {
 	@AfterMethod
 	public void teardown() {		
 		driver.quit();
+		log.info("--- [TEARDOWN] Browser closed ---");
 	}
 
 	@AfterSuite

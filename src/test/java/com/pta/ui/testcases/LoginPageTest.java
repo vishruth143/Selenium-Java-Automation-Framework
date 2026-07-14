@@ -34,6 +34,7 @@ public class LoginPageTest extends TestBase{
 	
 	@BeforeMethod
 	public void setup() throws MalformedURLException {
+		log.info("--- [SETUP] Launching browser | Initializing LoginPage ---");
 		initialization();		
 		loginpage = new LoginPage();
 	}
@@ -170,7 +171,7 @@ public class LoginPageTest extends TestBase{
 	@AfterMethod
 	public void teardown() {
 		driver.quit();
-		log.info("Close Chrome");
+		log.info("--- [TEARDOWN] Browser closed ---");
 	}
 	
 	@AfterSuite

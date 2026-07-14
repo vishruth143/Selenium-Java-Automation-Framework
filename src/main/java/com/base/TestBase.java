@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.time.Duration;
 import java.util.Properties;
@@ -20,6 +21,8 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.decorators.WebDriverDecorator;
 import org.openqa.selenium.support.events.EventFiringDecorator;
 import org.testng.ITestResult;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
 
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
@@ -37,7 +40,9 @@ public class TestBase {
 	public static ExtentReports extent;
 	public static ExtentTest test;
 	public static Environment activeEnvironment;
-		
+
+	private static volatile boolean configLogged = false;
+
 	public TestBase() {
 		log = Logger.getLogger(TestBase.class);
 		try {
@@ -52,9 +57,15 @@ public class TestBase {
 			String configFilePath = System.getProperty("user.dir")
 					+ "/src/main/java/com/" + appName + "/config/" + configFileName;
 
-			log.info("Active application  : " + appName);
-			log.info("Active environment  : " + activeEnvironment.name());
-			log.info("Loading config file : " + configFilePath);
+			// Log config details only once across all test class instantiations
+			if (!configLogged) {
+				configLogged = true;
+				log.info("=".repeat(100));
+				log.info("  Active application  : " + appName);
+				log.info("  Active environment  : " + activeEnvironment.name());
+				log.info("  Loading config file : " + configFilePath);
+				log.info("=".repeat(100));
+			}
 
 			prop = new Properties();
 			FileInputStream ip = new FileInputStream(configFilePath);
@@ -65,6 +76,20 @@ public class TestBase {
 			e.printStackTrace();
 		}
 	}
+
+	@BeforeClass
+	public void logTestClassStart() {
+		Logger classLog = Logger.getLogger(this.getClass());
+		classLog.info("");
+		classLog.info(">>>>>>>>>> [TEST CLASS START] " + this.getClass().getSimpleName() + " <<<<<<<<<<");
+	}
+
+	@AfterClass
+	public void logTestClassEnd() {
+		Logger classLog = Logger.getLogger(this.getClass());
+		classLog.info("<<<<<<<<<< [TEST CLASS END]   " + this.getClass().getSimpleName() + " >>>>>>>>>>");
+		classLog.info("");
+	}
 	
 	public static void initialization() throws MalformedURLException {
 		//String browser = prop.getProperty("browser");
@@ -73,26 +98,20 @@ public class TestBase {
 		DesiredCapabilities cap = new DesiredCapabilities();
 		
 		if(browser.equals("chrome")) {			
-			//WebDriverManager.chromedriver().setup();
-			//baseDriver = new ChromeDriver();
 			cap.setBrowserName("chrome");
 			cap.setPlatform(Platform.LINUX);
-			log.info("Launch Chrome");
-			baseDriver = new RemoteWebDriver(new URL("http://localhost:4441/wd/hub"), cap);
+			log.info("--- [SETUP] Launching Chrome (remote: localhost:4441) ---");
+			baseDriver = new RemoteWebDriver(URI.create("http://localhost:4441/wd/hub").toURL(), cap);
 		} else if(browser.equals("firefox")) {
-			//WebDriverManager.firefoxdriver().setup();
-			//baseDriver = new FirefoxDriver();
 			cap.setBrowserName("firefox");
 			cap.setPlatform(Platform.LINUX);
-			log.info("Launch Firefox");
-			baseDriver = new RemoteWebDriver(new URL("http://localhost:4442/wd/hub"), cap);
+			log.info("--- [SETUP] Launching Firefox (remote: localhost:4442) ---");
+			baseDriver = new RemoteWebDriver(URI.create("http://localhost:4442/wd/hub").toURL(), cap);
 		} else if(browser.equals("edge")) {
-			//WebDriverManager.edgedriver().setup();
-			//baseDriver = new EdgeDriver();
 			cap.setBrowserName("MicrosoftEdge");
 			cap.setPlatform(Platform.LINUX);
-			log.info("Launch MicrosoftEdge");
-			baseDriver = new RemoteWebDriver(new URL("http://localhost:4443/wd/hub"), cap);
+			log.info("--- [SETUP] Launching Edge (remote: localhost:4443) ---");
+			baseDriver = new RemoteWebDriver(URI.create("http://localhost:4443/wd/hub").toURL(), cap);
 		}
 		
 		// Add the WebDriver listener
