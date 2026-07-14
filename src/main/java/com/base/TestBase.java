@@ -6,7 +6,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URL;
 import java.time.Duration;
 import java.util.Properties;
 
@@ -42,6 +41,7 @@ public class TestBase {
 	public static Environment activeEnvironment;
 
 	private static volatile boolean configLogged = false;
+	private static volatile boolean screenshotsCleared = false;
 
 	public TestBase() {
 		log = Logger.getLogger(TestBase.class);
@@ -127,6 +127,32 @@ public class TestBase {
 	}
 	
 	public static void initializeReport() {
+		// ── Clear screenshot folders once per JVM run ─────────────────────────────
+		if (!screenshotsCleared) {
+			screenshotsCleared = true;
+			String userDir = System.getProperty("user.dir");
+			String fileSeparator = System.getProperty("file.separator");
+
+			File[] screenshotDirs = {
+				new File(userDir + fileSeparator + "screenshots"),
+				new File(userDir + fileSeparator + "Reports" + fileSeparator + "screenshots")
+			};
+			for (File dir : screenshotDirs) {
+				try {
+					if (dir.exists()) {
+						FileUtils.cleanDirectory(dir);
+						log.info("--- Cleared screenshots folder: " + dir.getPath() + " ---");
+					} else {
+						dir.mkdirs();
+						log.info("--- Created screenshots folder: " + dir.getPath() + " ---");
+					}
+				} catch (IOException e) {
+					log.warn("Could not clear screenshots folder: " + dir.getPath() + " – " + e.getMessage());
+				}
+			}
+		}
+
+		// ── Initialise Extent report ──────────────────────────────────────────────
 		sparkReporter = new ExtentSparkReporter(System.getProperty("user.dir")+"/reports/extentSparkReport.html");
 		sparkReporter.config().setDocumentTitle("PTA Automation Report");
 		sparkReporter.config().setReportName(

@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -49,8 +51,9 @@ public class TestUtil extends TestBase {
 	}
 	
 	public static void takeScreenShot(String fileName) throws IOException {
+		String timestamp = new SimpleDateFormat("MM-dd-yyyy_hh-mma").format(new Date());
 		String currentDir = System.getProperty("user.dir");
 		File srcFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
-		FileUtils.copyFile(srcFile, new File(currentDir + "/screenshots/" + fileName+System.currentTimeMillis() + ".png"));		
+		FileUtils.copyFile(srcFile, new File(currentDir + "/screenshots/" + fileName + "_" + timestamp + ".png"));		
 	}	
 }

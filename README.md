@@ -1,6 +1,6 @@
 # Selenium Java Automation Framework
 
-**Java** "21.0.11" 2026-04-21 LTS | **Selenium** 4.27.0 | **TestNG** 7.10.2 | **Maven** 3.9.16 | **REST Assured** 5.5.0 | **License** MIT
+**Java** "21.0.11" 2026-04-21 LTS | **Selenium** 4.45.0 | **TestNG** 7.12.0 | **Maven** 3.9.16 | **REST Assured** 6.0.0 | **License** MIT
 
 A robust, scalable, and maintainable test automation framework built using **Selenium WebDriver**, **TestNG**, and **Java**.
 Implements the **Page Object Model (POM) / Page Chaining** design pattern with a data-driven approach.
@@ -140,25 +140,25 @@ The report title automatically includes the active environment name.
 
 ### Core
 - **Java (JDK)** `21"21.0.11" 2026-04-21 LTS` — Core programming language
-- **Maven** `3.9.9` — Build automation and dependency management
+- **Maven** `3.9.16` — Build automation and dependency management
 
 ### UI Automation
-- **Selenium WebDriver** `4.27.0` — Browser automation
-- **WebDriverManager** `5.9.2` — Automatic driver binary management
+- **Selenium WebDriver** `4.45.0` — Browser automation
+- **WebDriverManager** `6.3.4` — Automatic driver binary management
 
 ### Test Framework
-- **TestNG** `7.10.2` — Test execution, assertions, and reporting
+- **TestNG** `7.12.0` — Test execution, assertions, and reporting
 
 ### API Testing
-- **REST Assured** `5.5.0` — REST API test automation
+- **REST Assured** `6.0.0` — REST API test automation
 - **JSON Simple** `1.1.1` — JSON parsing
 
 ### Test Data
-- **Apache POI** `5.3.0` — Excel-based data-driven testing (`poi`, `poi-ooxml`, `poi-scratchpad`)
+- **Apache POI** `5.5.1` — Excel-based data-driven testing (`poi`, `poi-ooxml`, `poi-scratchpad`)
 
 ### Reporting and Logging
 - **ExtentReports** `5.1.2` — Rich interactive HTML test reports
-- **Log4J** `2.24.3` — Application and test logging
+- **Log4J** `2.26.1` — Application and test logging
 
 ### Infrastructure and CI
 - **Docker / Selenium Grid** — Parallel and remote cross-browser execution
@@ -171,7 +171,7 @@ The report title automatically includes the active environment name.
 Before setting up the project, ensure the following are installed and configured on your machine:
 
 - Java JDK 21
-- Apache Maven 3.6 or higher
+- Apache Maven 3.9.16
 - Git
 - Eclipse IDE (with TestNG plugin) or IntelliJ IDEA
 - Docker (optional, for Grid-based execution)
@@ -664,7 +664,7 @@ The framework generates the following reports after each test run:
 
 **Show hidden dot-files in Eclipse Package Explorer**
 
-1. Click the **View Menu** (three dots) in the top-right corner of Package Explorer.
+1. Click the **View Menu** (⋮) in the top-right corner of Package Explorer.
 2. Select **Filters**.
 3. Uncheck **.* resources**.
 4. Click **OK**.
